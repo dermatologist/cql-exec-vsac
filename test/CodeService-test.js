@@ -48,9 +48,9 @@ describe('CodeService', () => {
       service.valueSets.should.not.be.empty;
     });
 
-    it('should default to SVS API', () => {
+    it('should default to FHIR API', () => {
       service = new cs.CodeService(path.join(__dirname, 'fixtures'), true);
-      service.api.name.should.equal('SVS');
+      service.api.name.should.equal('FHIR');
     });
 
     it('should use SVS API when useFHIR is false', () => {
