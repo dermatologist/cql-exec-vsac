@@ -77,6 +77,7 @@ class CodeService {
   async ensureValueSetsWithAPIKey(
     valueSetList = [],
     umlsAPIKey = env['UMLS_API_KEY'],
+    fhirBaseUrl,
     caching = true,
     options = { svsCodeSystemType: 'url' }
   ) {
@@ -113,7 +114,7 @@ class CodeService {
         // Catch errors and convert to resolutions returning an error.  This ensures Promise.all waits for all promises.
         // See: http://stackoverflow.com/questions/31424561/wait-until-all-es6-promises-complete-even-rejected-promises
         return this.api
-          .downloadValueSet(umlsAPIKey, oid, version, output, this.valueSets, caching, options)
+          .downloadValueSet(umlsAPIKey, fhirBaseUrl, oid, version, output, this.valueSets, caching, options)
           .catch(err => {
             debug(
               `Error downloading valueset ${oid}${version != null ? ` version ${version}` : ''}`,
@@ -152,11 +153,12 @@ class CodeService {
     library,
     checkIncluded = true,
     umlsAPIKey = env['UMLS_API_KEY'],
+    fhirBaseUrl = "https://cts.nlm.nih.gov/fhir",
     caching = true,
     options = { svsCodeSystemType: 'url' }
   ) {
     const valueSets = extractSetOfValueSetsFromLibrary(library, checkIncluded);
-    return this.ensureValueSetsWithAPIKey(Array.from(valueSets), umlsAPIKey, caching, options);
+    return this.ensureValueSetsWithAPIKey(Array.from(valueSets), umlsAPIKey, fhirBaseUrl, caching, options);
   }
 
   /**
