@@ -77,7 +77,7 @@ class CodeService {
   async ensureValueSetsWithAPIKey(
     valueSetList = [],
     umlsAPIKey = env['UMLS_API_KEY'],
-    fhirBaseUrl = "https://cts.nlm.nih.gov/fhir",
+    fhirBaseUrl = env['FHIR_BASE_URL'] || "https://cts.nlm.nih.gov/fhir",
     caching = true,
     options = { svsCodeSystemType: 'url' }
   ) {
@@ -153,7 +153,7 @@ class CodeService {
     library,
     checkIncluded = true,
     umlsAPIKey = env['UMLS_API_KEY'],
-    fhirBaseUrl = "https://cts.nlm.nih.gov/fhir",
+    fhirBaseUrl = env['FHIR_BASE_URL'] || "https://cts.nlm.nih.gov/fhir",
     caching = true,
     options = { svsCodeSystemType: 'url' }
   ) {
