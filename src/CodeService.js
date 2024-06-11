@@ -14,7 +14,7 @@ const fhir = require('./fhir');
  * @param {boolean=false} loadFromCache - if true, and the cache exists, will initialize itself with the JSON DB
  */
 class CodeService {
-  constructor(vsacCache, loadFromCache = false, useFHIR = false) {
+  constructor(vsacCache, loadFromCache = false, useFHIR = true) {
     this.api = useFHIR ? fhir : svs;
 
     // Initialize the local in-memory "database"
