@@ -69,11 +69,16 @@ Downloading value set definitions from VSAC requires a valid UMLS account.  The 
 `ensureValueSetsWithAPIKey` function allows a UMLS API key to be passed in.  Alternately, the UMLS API key can be
 provided via the `UMLS_API_KEY` environment variable.
 
+### This fork adds support for FHIR Endpoints
+Open FHIR Endpoints can be specified by passing in the `fhirBaseUrl` parameter to the `ensureValueSetsWithAPIKey` or
+via the `FHIR_BASE_URL` environment variable. (Note that the `fhirBaseUrl` parameter is optional and if used
+the UMLS key is ignored.)
+
 ## Downloading Value Set Definitions
 
 The `ensureValueSetsWithAPIKey` and `ensureValueSetsInLibraryWithAPIKey` functions are the only functions that attempt
 to download value sets from VSAC.  Before they make a request to VSAC, they will check the cache.  If the value set is
-already in the cache, they will not make a request to VSAC.  Otherwise, they will use VSAC's SVS2 API or FHIR API 
+already in the cache, they will not make a request to VSAC.  Otherwise, they will use VSAC's SVS2 API or FHIR API
 to download the expanded codes from the value set.
 
 The `findValueSet` and `findValueSets` functions (including the legacy `findValueSetsByOid` function) do not reach out
@@ -106,7 +111,7 @@ const vsac = require('cql-exec-vsac');
 // Set up the code service, loading from the cache if it exists
 const codeService = new vsac.CodeService('/path/to/vsac_cache', true);
 // Ensure value sets in the library and its dependencies, downloading any missing value sets
-codeService.ensureValueSetsInLibraryWithApiKey(library, true, 'myUmlsApiKey')
+codeService.ensureValueSetsInLibraryWithApiKey(library, true, 'myUmlsApiKey' 'fhirBaseUrl') // fhirBaseUrl is optional
 .then(() => {
   // Value sets are loaded, so execute!
   const executor = new cql.Executor(lib, codeService, parameters);
