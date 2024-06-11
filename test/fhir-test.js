@@ -35,6 +35,7 @@ describe('FHIR', () => {
       const vsDB = {};
       const result = await fhir.downloadValueSet(
         'testkey',
+        'https://cts.nlm.nih.gov/fhir',
         '2.16.840.1.113883.3.600.2390',
         undefined,
         tmpCache,
@@ -61,6 +62,7 @@ describe('FHIR', () => {
       const vsDB = {};
       const result = await fhir.downloadValueSet(
         'testkey',
+        'https://cts.nlm.nih.gov/fhir',
         '2.16.840.1.113883.3.600.2390',
         '20210304',
         tmpCache,
@@ -92,6 +94,7 @@ describe('FHIR', () => {
       await Promise.all([
         fhir.downloadValueSet(
           'testkey',
+          'https://cts.nlm.nih.gov/fhir',
           '2.16.840.1.113883.3.526.3.1032',
           undefined,
           tmpCache,
@@ -100,6 +103,7 @@ describe('FHIR', () => {
         ),
         fhir.downloadValueSet(
           'testkey',
+          'https://cts.nlm.nih.gov/fhir',
           '2.16.840.1.113883.3.600.2390',
           undefined,
           tmpCache,
@@ -150,6 +154,7 @@ describe('FHIR', () => {
       const vsDB = {};
       const result = await fhir.downloadValueSet(
         'testkey',
+        'https://cts.nlm.nih.gov/fhir',
         '2.16.840.1.113883.3.600.2390',
         '20210304',
         tmpCache,
@@ -177,6 +182,7 @@ describe('FHIR', () => {
       try {
         await fhir.downloadValueSet(
           'testkey',
+          'https://cts.nlm.nih.gov/fhir',
           '1.2.3.4.5.6.7.8.9.10',
           '20170320',
           tmpCache,

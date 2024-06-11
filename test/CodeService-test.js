@@ -731,20 +731,22 @@ describe('CodeService', () => {
 
     const doDownloadTestWithAPIKey = async (vsList, withVersion = false) => {
       service.api.downloadValueSet.callsFake(
-        async (apiKey, oid, version, output, vsDB = {}, caching = true) => {
+        async (apiKey, fhirBaseUrl, oid, version, output, vsDB = {}, caching = true) => {
           return path.join(service.cache, `${oid}.xml`);
         }
       );
-      await service.ensureValueSetsWithAPIKey(vsList, 'testkey');
+      await service.ensureValueSetsWithAPIKey(vsList, 'testkey', 'https://cts.nlm.nih.gov/fhir');
       sandbox.assert.calledWith(
         service.api.downloadValueSet,
         'testkey',
+        'https://cts.nlm.nih.gov/fhir',
         '2.16.840.1.113883.3.526.3.1032',
         withVersion ? '20170504' : undefined
       );
       sandbox.assert.calledWith(
         service.api.downloadValueSet,
         'testkey',
+        'https://cts.nlm.nih.gov/fhir',
         '2.16.840.1.113883.3.600.2390',
         withVersion ? '20210304' : undefined
       );
@@ -752,7 +754,7 @@ describe('CodeService', () => {
 
     it('should download and cache successful value sets before throwing error', async () => {
       service.api.downloadValueSet.callsFake(
-        async (apiKey, oid, version, output, vsDB = {}, caching = true) => {
+        async (apiKey, fhirBaseUrl, oid, version, output, vsDB = {}, caching = true) => {
           if (oid === '1.2.3.4.5.6.7.8.9.10') {
             throw new Error(404); // Not Found
           } else if (oid === '2.16.840.1.113883.3.600.2390') {
@@ -776,7 +778,7 @@ describe('CodeService', () => {
       ];
 
       try {
-        await service.ensureValueSetsWithAPIKey(vsList, 'testkey');
+        await service.ensureValueSetsWithAPIKey(vsList, 'testkey', 'https://cts.nlm.nih.gov/fhir');
         should.fail(0, 1, 'This code should never be executed since there were errors');
       } catch (error) {
         // Test that the value sets were properly loaded into memory
@@ -822,7 +824,7 @@ describe('CodeService', () => {
 
     it('should error if invalid API Key is supplied', async () => {
       service.api.downloadValueSet.callsFake(
-        async (apiKey, oid, version, output, vsDB = {}, caching = true) => {
+        async (apiKey, fhirBaseUrl, oid, version, output, vsDB = {}, caching = true) => {
           throw new Error(401); // Unauthorized
         }
       );
@@ -847,7 +849,7 @@ describe('CodeService', () => {
 
     it('should error if value set is not found', async () => {
       service.api.downloadValueSet.callsFake(
-        async (apiKey, oid, version, output, vsDB = {}, caching = true) => {
+        async (apiKey, fhirBaseUrl, oid, version, output, vsDB = {}, caching = true) => {
           throw new Error(404); // Not Found
         }
       );
@@ -861,7 +863,7 @@ describe('CodeService', () => {
       ];
 
       try {
-        await service.ensureValueSetsWithAPIKey(vsList, 'testkey');
+        await service.ensureValueSetsWithAPIKey(vsList, 'testkey', 'https://cts.nlm.nih.gov/fhir');
         should.fail(0, 1, 'This code should never be executed since there were errors');
       } catch (error) {
         error.should.have.length(1);
