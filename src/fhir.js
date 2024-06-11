@@ -39,7 +39,7 @@ async function downloadValueSet(
 }
 
 async function getValueSetPages(apiKey, fhirBaseUrl, oid, version, offset = 0) {
-  const page = await getValueSet(apiKey, oid, version, offset);
+  const page = await getValueSet(apiKey, fhirBaseUrl, oid, version, offset);
   if (page && page.expansion) {
     const pTotal = page.expansion.total;
     const pOffset = page.expansion.offset;
