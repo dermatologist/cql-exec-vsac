@@ -46,7 +46,7 @@ async function getValueSetPages(apiKey, fhirBaseUrl, oid, version, offset = 0) {
     const pLength = page.expansion.contains && page.expansion.contains.length;
     if (pTotal != null && pOffset != null && pLength != null && pTotal > pOffset + pLength) {
       // Fetch and append the remaining value set pages
-      const remainingPages = await getValueSetPages(apiKey, oid, version, offset + pLength);
+      const remainingPages = await getValueSetPages(apiKey, fhirBaseUrl, oid, version, offset + pLength);
       return [page, ...remainingPages];
     } else {
       return [page];
