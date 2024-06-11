@@ -6,6 +6,7 @@ const { Code, ValueSet } = require('cql-execution');
 
 async function downloadValueSet(
   apiKey,
+  fhirBaseUrl,
   oid,
   version,
   output,
@@ -15,7 +16,7 @@ async function downloadValueSet(
     /* reserved for future use */
   }
 ) {
-  const pages = await getValueSetPages(apiKey, oid, version);
+  const pages = await getValueSetPages(apiKey, fhirBaseUrl, oid, version);
   if (pages == null || pages.length === 0) {
     return;
   }
@@ -37,15 +38,15 @@ async function downloadValueSet(
   }
 }
 
-async function getValueSetPages(apiKey, oid, version, offset = 0) {
-  const page = await getValueSet(apiKey, oid, version, offset);
+async function getValueSetPages(apiKey, fhirBaseUrl, oid, version, offset = 0) {
+  const page = await getValueSet(apiKey, fhirBaseUrl, oid, version, offset);
   if (page && page.expansion) {
     const pTotal = page.expansion.total;
     const pOffset = page.expansion.offset;
     const pLength = page.expansion.contains && page.expansion.contains.length;
     if (pTotal != null && pOffset != null && pLength != null && pTotal > pOffset + pLength) {
       // Fetch and append the remaining value set pages
-      const remainingPages = await getValueSetPages(apiKey, oid, version, offset + pLength);
+      const remainingPages = await getValueSetPages(apiKey, fhirBaseUrl, oid, version, offset + pLength);
       return [page, ...remainingPages];
     } else {
       return [page];
@@ -53,7 +54,7 @@ async function getValueSetPages(apiKey, oid, version, offset = 0) {
   }
 }
 
-async function getValueSet(apiKey, oid, version, offset = 0) {
+async function getValueSet(apiKey, fhirBaseUrl, oid, version, offset = 0) {
   debug(
     `Getting ValueSet: ${oid}${version != null ? ` version ${version}` : ''} (offset: ${offset})`
   );
@@ -66,7 +67,7 @@ async function getValueSet(apiKey, oid, version, offset = 0) {
   if (version != null) {
     params.set('valueSetVersion', version);
   }
-  const url = `https://cts.nlm.nih.gov/fhir/ValueSet/${oid}/$expand?${params}`;
+  const url = `${fhirBaseUrl}/ValueSet/${oid}/$expand?${params}`;
 
   const response = await fetch(url, options);
   if (!response.ok) {
