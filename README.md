@@ -1,3 +1,8 @@
+### *This fork adds experimental support for other FHIR Endpoints as ValueSet sources!*
+FHIR Endpoints can be specified by passing the `fhirBaseUrl` parameter to the `ensureValueSetsWithAPIKey` or
+via the `FHIR_BASE_URL` environment variable. (Note that the `fhirBaseUrl` parameter is optional and
+the UMLS key is ignored when used with an external FHIR server URL)
+
 # CQL Execution VSAC Code Service
 
 This project establishes a VSAC-enabled code service module for use with the CQL Execution Engine.  This allows the
@@ -68,11 +73,6 @@ overwriting the cache.
 Downloading value set definitions from VSAC requires a valid UMLS account.  The code service's
 `ensureValueSetsWithAPIKey` function allows a UMLS API key to be passed in.  Alternately, the UMLS API key can be
 provided via the `UMLS_API_KEY` environment variable.
-
-### This fork adds support for FHIR Endpoints
-Open FHIR Endpoints can be specified by passing in the `fhirBaseUrl` parameter to the `ensureValueSetsWithAPIKey` or
-via the `FHIR_BASE_URL` environment variable. (Note that the `fhirBaseUrl` parameter is optional and if used
-the UMLS key is ignored.)
 
 ## Downloading Value Set Definitions
 
