@@ -1,7 +1,7 @@
 ### *This fork adds experimental support for other FHIR Endpoints as ValueSet sources!*
 FHIR Endpoints can be specified by passing the `fhirBaseUrl` parameter to the `ensureValueSetsWithAPIKey` or
 via the `FHIR_BASE_URL` environment variable. (Note that the `fhirBaseUrl` parameter is optional and
-the UMLS key is ignored when used with an external FHIR server URL)
+the UMLS key is ignored when used with an external FHIR server URL). [See also, cql-execution with LLM support!](https://github.com/dermatologist/cql-execution)
 
 # CQL Execution VSAC Code Service
 
